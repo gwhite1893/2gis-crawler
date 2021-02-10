@@ -1,0 +1,113 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "2-gis-crawler",
+        "title": "crawler",
+        "contact": {},
+        "license": {},
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1",
+    "basePath": "/api/crawler/v1",
+    "paths": {
+        "/resources/poll": {
+            "post": {
+                "description": "Poll by request url",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sources"
+                ],
+                "summary": "Sites polling",
+                "operationId": "sources-poll",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.sourcePollRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.sourcePollResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "web.PollResult": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "web.errResponse": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "user-level status message",
+                    "type": "string"
+                },
+                "error": {
+                    "description": "application-level error message",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "http response status code",
+                    "type": "integer"
+                }
+            }
+        },
+        "web.sourcePollRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "web.sourcePollResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/web.PollResult"
+                    }
+                }
+            }
+        }
+    }
+}

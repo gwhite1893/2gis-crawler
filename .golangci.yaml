@@ -1,0 +1,51 @@
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0
+  gocyclo:
+    min-complexity: 15
+  maligned:
+    suggest-new: true
+  dupl:
+    threshold: 100
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  misspell:
+    locale: US
+  lll:
+    line-length: 140
+  goimports:
+    local-prefixes: github.com/golangci/golangci-lint
+  gocritic:
+    enabled-tags:
+      - performance
+      - style
+      - experimental
+    disabled-checks:
+      - wrapperFunc
+
+linters:
+  enable-all: true
+  disable:
+    - godox # disable errors on TODO's
+    - funlen
+    - rowserrcheck
+    - gci
+    - godot
+
+run:
+  timeout: 5m
+  tests: false
+  skip-dirs:
+    - swagger-ui
+    - docs
+    - templates
+    - migrations
+    - \.go
+# golangci.com configuration
+# https://github.com/golangci/golangci/wiki/Configuration
+
+# example
+# https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml

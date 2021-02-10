@@ -1,0 +1,75 @@
+basePath: /api/crawler/v1
+definitions:
+  web.PollResult:
+    properties:
+      body:
+        type: string
+      url:
+        type: string
+    type: object
+  web.errResponse:
+    properties:
+      description:
+        description: user-level status message
+        type: string
+      error:
+        description: application-level error message
+        type: string
+      status:
+        description: http response status code
+        type: integer
+    type: object
+  web.sourcePollRequest:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+    type: object
+  web.sourcePollResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/web.PollResult'
+        type: array
+    type: object
+host: 127.0.0.1
+info:
+  contact: {}
+  description: 2-gis-crawler
+  license: {}
+  title: crawler
+  version: 1.0.0
+paths:
+  /resources/poll:
+    post:
+      consumes:
+      - application/json
+      description: Poll by request url
+      operationId: sources-poll
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/web.sourcePollRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.sourcePollResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errResponse'
+      summary: Sites polling
+      tags:
+      - sources
+swagger: "2.0"

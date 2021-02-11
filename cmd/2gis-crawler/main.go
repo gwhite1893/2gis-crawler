@@ -30,7 +30,7 @@ func main() {
 	}
 
 	newApp, err := app.NewApp(
-		app.WithHTTPServer(cfg.HTTPServer),
+		app.WithHTTPServer(cfg),
 	)
 	if err != nil {
 		return

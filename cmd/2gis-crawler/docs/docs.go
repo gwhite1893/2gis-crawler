@@ -54,7 +54,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.sourcePollResponse"
+                            "$ref": "#/definitions/web.sourcesPollResponse"
                         }
                     },
                     "400": {
@@ -80,6 +80,9 @@ var doc = `{
                 "body": {
                     "type": "string"
                 },
+                "error": {
+                    "type": "string"
+                },
                 "url": {
                     "type": "string"
                 }
@@ -89,15 +92,12 @@ var doc = `{
             "type": "object",
             "properties": {
                 "description": {
-                    "description": "user-level status message",
                     "type": "string"
                 },
                 "error": {
-                    "description": "application-level error message",
                     "type": "string"
                 },
                 "status": {
-                    "description": "http response status code",
                     "type": "integer"
                 }
             }
@@ -113,7 +113,7 @@ var doc = `{
                 }
             }
         },
-        "web.sourcePollResponse": {
+        "web.sourcesPollResponse": {
             "type": "object",
             "properties": {
                 "data": {

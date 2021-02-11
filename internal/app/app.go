@@ -5,12 +5,11 @@ import (
 	"log"
 	"sync"
 
-	"github.com/gwhite1893/2gis-crawler/internal/crawler"
+	"github.com/pkg/errors"
 
 	"github.com/gwhite1893/2gis-crawler/config"
+	"github.com/gwhite1893/2gis-crawler/internal/crawler"
 	"github.com/gwhite1893/2gis-crawler/internal/web"
-
-	"github.com/pkg/errors"
 )
 
 var errAppFailed = errors.New("app  failed")
@@ -25,7 +24,6 @@ type app struct {
 	cancel context.CancelFunc
 	wg     *sync.WaitGroup
 
-	crawler    crawler.Crawler
 	httpServer *web.Server
 }
 
@@ -60,7 +58,7 @@ func (e *app) Shutdown() {
 	log.Println("app shutdown")
 }
 
-func WithHTTPServer(conf *config.HTTPServerCfg) Option {
+func WithHTTPServer(conf *config.Config) Option {
 	return func(ctx context.Context, e *app) {
 		if ctx.Err() != nil {
 			log.Println("http server failed: ", ctx.Err())
@@ -68,8 +66,16 @@ func WithHTTPServer(conf *config.HTTPServerCfg) Option {
 			return
 		}
 
-		if conf == nil {
+		if conf.HTTPServer == nil {
 			log.Println("http server configuration failed")
+			e.cancel()
+
+			return
+		}
+
+		crwler, err := crawler.NewCrawler(ctx, e.wg, conf.Crawler)
+		if err != nil {
+			log.Println("crawler failed")
 			e.cancel()
 
 			return
@@ -78,7 +84,8 @@ func WithHTTPServer(conf *config.HTTPServerCfg) Option {
 		s, err := web.NewHTTPServer(
 			ctx,
 			e.wg,
-			conf,
+			conf.HTTPServer,
+			crwler,
 		)
 		if err != nil {
 			log.Println("http server start failed", err)
@@ -88,36 +95,5 @@ func WithHTTPServer(conf *config.HTTPServerCfg) Option {
 		}
 
 		e.httpServer = s
-	}
-}
-
-func WithCrawler(conf *config.CrawlerCfg) Option {
-	return func(ctx context.Context, e *app) {
-		if ctx.Err() != nil {
-			log.Println("crawler failed: ", ctx.Err())
-
-			return
-		}
-
-		if conf == nil {
-			log.Println("crawler configuration failed")
-			e.cancel()
-
-			return
-		}
-
-		c, err := crawler.NewCrawler(
-			ctx,
-			e.wg,
-			conf,
-		)
-		if err != nil {
-			log.Println("crawler start failed", err)
-			e.cancel()
-
-			return
-		}
-
-		e.crawler = c
 	}
 }

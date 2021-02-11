@@ -8,6 +8,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gwhite1893/2gis-crawler/internal/crawler"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
@@ -18,15 +20,19 @@ import (
 
 type Server struct {
 	httpServer http.Server
+	crawler    crawler.Crawler
 }
 
 func NewHTTPServer(
 	ctx context.Context,
 	wg *sync.WaitGroup,
 	httpServerCfg *config.HTTPServerCfg,
+	c crawler.Crawler,
 
 ) (*Server, error) {
-	s := &Server{}
+	s := &Server{
+		crawler: c,
+	}
 
 	s.setup(httpServerCfg)
 
@@ -80,7 +86,6 @@ func (s *Server) setup(serverCfg *config.HTTPServerCfg) {
 			r.Route("/sources", func(r chi.Router) {
 				r.Post("/poll", s.PollSources)
 			})
-
 		})
 	})
 }

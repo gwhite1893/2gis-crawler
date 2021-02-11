@@ -8,7 +8,8 @@ require (
 	github.com/go-chi/render v1.0.1
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.7.0
+	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/swag v1.7.0
-	go.uber.org/zap v1.16.0
+	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )

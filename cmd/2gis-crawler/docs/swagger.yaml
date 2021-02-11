@@ -4,19 +4,18 @@ definitions:
     properties:
       body:
         type: string
+      error:
+        type: string
       url:
         type: string
     type: object
   web.errResponse:
     properties:
       description:
-        description: user-level status message
         type: string
       error:
-        description: application-level error message
         type: string
       status:
-        description: http response status code
         type: integer
     type: object
   web.sourcePollRequest:
@@ -26,7 +25,7 @@ definitions:
           type: string
         type: array
     type: object
-  web.sourcePollResponse:
+  web.sourcesPollResponse:
     properties:
       data:
         items:
@@ -60,7 +59,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.sourcePollResponse'
+            $ref: '#/definitions/web.sourcesPollResponse'
         "400":
           description: Bad Request
           schema:

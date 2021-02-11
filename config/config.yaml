@@ -1,5 +1,4 @@
 crawler:
-  request_count: 10
   request_time_out_sec: 2
 http_server:
   host: "127.0.0.1"

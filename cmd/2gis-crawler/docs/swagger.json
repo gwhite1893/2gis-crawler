@@ -39,7 +39,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.sourcePollResponse"
+                            "$ref": "#/definitions/web.sourcesPollResponse"
                         }
                     },
                     "400": {
@@ -65,6 +65,9 @@
                 "body": {
                     "type": "string"
                 },
+                "error": {
+                    "type": "string"
+                },
                 "url": {
                     "type": "string"
                 }
@@ -74,15 +77,12 @@
             "type": "object",
             "properties": {
                 "description": {
-                    "description": "user-level status message",
                     "type": "string"
                 },
                 "error": {
-                    "description": "application-level error message",
                     "type": "string"
                 },
                 "status": {
-                    "description": "http response status code",
                     "type": "integer"
                 }
             }
@@ -98,7 +98,7 @@
                 }
             }
         },
-        "web.sourcePollResponse": {
+        "web.sourcesPollResponse": {
             "type": "object",
             "properties": {
                 "data": {

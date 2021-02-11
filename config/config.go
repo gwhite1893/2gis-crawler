@@ -17,8 +17,7 @@ type Config struct {
 }
 
 type CrawlerCfg struct {
-	MaxRequests       int `json:"max_requests"`
-	RequestTimeOutSec int `json:"request_time_out_sec"`
+	RequestTimeOutSec int `yaml:"request_time_out_sec"`
 }
 
 type HTTPServerCfg struct {

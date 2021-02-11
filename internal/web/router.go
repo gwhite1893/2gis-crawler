@@ -4,8 +4,12 @@ package web
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/gwhite1893/2gis-crawler/cmd/2gis-crawler/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 
 	"github.com/go-chi/render"
 	"github.com/gwhite1893/2gis-crawler/internal/parser"
@@ -13,6 +17,8 @@ import (
 )
 
 const (
+	swaggerVersion = "1.0.0"
+
 	badRequestMessage     = "bad request"
 	badRequestDescription = "Не удалось получить параметры запроса"
 )
@@ -52,7 +58,7 @@ func (s *sourcesPollResponse) Render(http.ResponseWriter, *http.Request) error {
 // @ID      sources-poll
 // @Accept  json
 // @Produce json
-// @Param	data body sourcePollRequest true "data"
+// @Param	data body sourcePollRequest true "urls array"
 // @Success 200 {object}  sourcesPollResponse
 // @Failure 400 {object} errResponse
 // @Failure 500 {object} errResponse
@@ -96,6 +102,24 @@ func (s *Server) PollSources(w http.ResponseWriter, r *http.Request) {
 	_ = render.Render(w, r, &sourcesPollResponse{
 		Data: pollResult,
 	})
+}
+
+// Swagger godoc
+// @Summary swagger
+// @Tags swagger
+// @Description Описание API
+// @ID swagger
+// @Produce html
+// @Success 200 "swagger html page"
+// @Router /swagger [get]
+func (s *Server) ServeSwagger() http.HandlerFunc {
+	docs.SwaggerInfo.Version = swaggerVersion
+	docs.SwaggerInfo.Host = s.httpServer.Addr
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
+	return httpSwagger.Handler(
+		httpSwagger.URL(fmt.Sprintf("%s/swagger/doc.json", s.httpServer.Addr)),
+	)
 }
 
 func errInvalidRequest() render.Renderer {

@@ -12,7 +12,11 @@ import (
 	"github.com/gwhite1893/2gis-crawler/config"
 )
 
-var errTimeout = errors.New("timeout")
+type Result struct {
+	Content []byte
+	Err     string
+	URL     string
+}
 
 type Response []*Result
 
@@ -98,23 +102,6 @@ func (c *crawler) Crawl(ctx context.Context, urls []string) (Response, error) {
 	return resp, nil
 }
 
-type command struct {
-	ctx   context.Context
-	value string
-	resCh chan<- resourceResponse
-}
-
-type resourceResponse struct {
-	Content []byte
-	Err     error
-}
-
-type Result struct {
-	Content []byte
-	Err     string
-	URL     string
-}
-
 func (c *crawler) run(ctx context.Context) {
 	for {
 		select {
@@ -122,19 +109,19 @@ func (c *crawler) run(ctx context.Context) {
 			c.cancel()
 
 			return
-		case command := <-c.commandChannel:
+		case cmd := <-c.commandChannel:
 			{
-				res := c.poll(command.ctx, command.value)
+				res := c.poll(cmd.ctx, cmd.value)
 
 				if res.Err != nil {
-					command.resCh <- resourceResponse{
+					cmd.resCh <- resourceResponse{
 						Err: errors.Wrapf(res.Err, "request failed"),
 					}
 
 					continue
 				}
 
-				command.resCh <- resourceResponse{
+				cmd.resCh <- resourceResponse{
 					Content: res.Content,
 				}
 			}

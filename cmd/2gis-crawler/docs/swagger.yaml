@@ -47,7 +47,7 @@ paths:
       description: Poll by request url
       operationId: sources-poll
       parameters:
-      - description: data
+      - description: urls array
         in: body
         name: data
         required: true
@@ -71,4 +71,16 @@ paths:
       summary: Sites polling
       tags:
       - sources
+  /swagger:
+    get:
+      description: Описание API
+      operationId: swagger
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: swagger html page
+      summary: swagger
+      tags:
+      - swagger
 swagger: "2.0"

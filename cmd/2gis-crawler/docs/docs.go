@@ -41,7 +41,7 @@ var doc = `{
                 "operationId": "sources-poll",
                 "parameters": [
                     {
-                        "description": "data",
+                        "description": "urls array",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -68,6 +68,24 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/web.errResponse"
                         }
+                    }
+                }
+            }
+        },
+        "/swagger": {
+            "get": {
+                "description": "Описание API",
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "swagger"
+                ],
+                "summary": "swagger",
+                "operationId": "swagger",
+                "responses": {
+                    "200": {
+                        "description": "swagger html page"
                     }
                 }
             }

@@ -87,7 +87,10 @@ func (s *Server) setup(serverCfg *config.HTTPServerCfg) {
 				r.Post("/poll", s.PollSources)
 			})
 		})
+
+		r.Get("/swagger/*", s.ServeSwagger())
 	})
+
 }
 
 func (s *Server) run(ctx context.Context) {
